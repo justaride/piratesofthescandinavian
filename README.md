@@ -2,11 +2,25 @@
 
 A narrative systems project for a branching roleplay-survival game set in the Oslofjord, where pirate crews and Viking powers collide through winter.
 
-This repository folder currently ships the structured content layer for Act 2 (Quests 6-10), including:
+This repository ships:
 
+- a playable React runtime for Act 2,
+- an Act 3 scaffold content pack wired to the same runtime pipeline,
 - machine-readable quest data,
-- a schema for validation,
+- schema validation,
 - normalized CSV exports for content pipelines.
+
+The content layer for Act 2 (Quests 6-10) includes:
+
+- deterministic branching choices,
+- stat and flag effects,
+- score formulas, outcome bands, and Act 3 start-state post-rules.
+
+Runtime UX currently includes:
+
+- persistent local save/resume (browser storage),
+- replay timeline on completion,
+- score codex panel with per-rule formula outputs.
 
 ## What You Get
 
@@ -14,14 +28,36 @@ This repository folder currently ships the structured content layer for Act 2 (Q
 - Deterministic score formulas and outcome bands.
 - Route-aware progression into Act 3 start states.
 
-## Quick Start
+## Quick Start (Playable Runtime)
+
+### Prerequisites
+
+- Node.js 20+
+- npm 10+
+
+### Install + Run
+
+```bash
+npm install
+npm run dev
+```
+
+Then open the local Vite URL shown in your terminal.
+
+### Test + Build
+
+```bash
+npm test
+npm run build
+```
+
+## Content Validation
 
 ### Prerequisites
 
 - `jq` (for JSON validation and CSV export checks)
-- Any runtime that can evaluate `expr-v1` style formulas
 
-### Validate Current Pack
+### Validate current pack
 
 ```bash
 jq empty story/data/act2-quest-pack.json
@@ -33,6 +69,19 @@ jq empty story/data/act2-quest-pack.json
 wc -l story/csv/*.csv
 ```
 
+### Export Act 3 CSV Tables
+
+```bash
+npm run export:csv:act3
+```
+
+### Export Act 2 and All Packs
+
+```bash
+npm run export:csv:act2
+npm run export:csv:all
+```
+
 ## Project Structure
 
 ```text
@@ -41,13 +90,19 @@ Pirates of the Scandinavian/
 ├── ARCHITECTURE.md
 ├── CONTRIBUTING.md
 ├── CHANGELOG.md
+├── GAME_PLAN.md
 ├── ROADMAP.md
+├── src/                     # React runtime, engine, UI, tests
+├── scripts/
+│   └── export-pack-csv.mjs
+├── package.json
 └── story/
     ├── README.md
     ├── schema/
     │   └── quest-pack.schema.json
     ├── data/
     │   └── act2-quest-pack.json
+    │   └── act3-quest-pack.json
     └── csv/
         ├── quests.csv
         ├── nodes.csv
@@ -55,7 +110,23 @@ Pirates of the Scandinavian/
         ├── effects.csv
         ├── scoring_rules.csv
         ├── outcome_bands.csv
-        └── meta.csv
+        ├── meta.csv
+        ├── act2/
+        │   ├── quests.csv
+        │   ├── nodes.csv
+        │   ├── choices.csv
+        │   ├── effects.csv
+        │   ├── scoring_rules.csv
+        │   ├── outcome_bands.csv
+        │   └── meta.csv
+        └── act3/
+            ├── quests.csv
+            ├── nodes.csv
+            ├── choices.csv
+            ├── effects.csv
+            ├── scoring_rules.csv
+            ├── outcome_bands.csv
+            └── meta.csv
 ```
 
 ## Core Gameplay Model (Data-Level)
@@ -91,6 +162,7 @@ Resource tracks (`Food`, `Med`, `Tar`, `Timber`, `Wounds`) and flags drive formu
 
 - `ARCHITECTURE.md`: system and data-flow design.
 - `CONTRIBUTING.md`: content editing and commit workflow.
+- `GAME_PLAN.md`: implementation and milestone plan for the playable game runtime.
 - `ROADMAP.md`: next planned milestones.
 - `CHANGELOG.md`: release history.
 - `story/README.md`: detailed table-level runtime guidance.

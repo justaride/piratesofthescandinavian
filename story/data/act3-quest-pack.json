@@ -1,0 +1,852 @@
+{
+  "version": "1.0.0",
+  "formula_language": "expr-v1",
+  "act": 3,
+  "stats": [
+    "P",
+    "V",
+    "O",
+    "W",
+    "S",
+    "M",
+    "Food",
+    "Med",
+    "Tar",
+    "Timber",
+    "Wounds",
+    "A2"
+  ],
+  "flags": [
+    "ending_vector",
+    "chapter1",
+    "famine",
+    "oath_shattered",
+    "oath_cracked",
+    "mutiny",
+    "sickness",
+    "act3_start_state",
+    "act3_faction",
+    "spring_strategy",
+    "throne_policy",
+    "rift_response",
+    "harbor_law",
+    "ritual_cost",
+    "northwind_pact",
+    "crown_status",
+    "act4_start_state"
+  ],
+  "meta": {
+    "A2_seed_expression": "A2 = (chapter1=='dominant'?18:chapter1=='stable'?10:chapter1=='fragile'?2:-8) + (ending_vector=='conquest'?8:ending_vector=='accord'?8:ending_vector=='ashen'?6:ending_vector=='exile'?5:0) - (famine?6:0)",
+    "act3_start_seed": "act3_start_state = (ending_vector=='conquest' ? 'WARLORD_ASCENDANT' : ending_vector=='accord' ? 'TREATY_REGENT' : ending_vector=='ashen' ? 'ASH_PROPHET' : 'GHOST_ADMIRAL')"
+  },
+  "quests": [
+    {
+      "quest_id": "Q11_BREAKWATER_COUNCIL",
+      "order": 11,
+      "title": "Breakwater Council",
+      "beat": [
+        "[Sigrid] 'Spring waters carry every grudge back to shore.'",
+        "[Hakon] 'Then bind them before they become fleets.'"
+      ],
+      "nodes": [
+        {
+          "node_id": "Q11_C1",
+          "prompt": "Choose a faction anchor.",
+          "choices": [
+            {
+              "choice_id": "Q11_C1_A",
+              "text": "War captains' bloc",
+              "effects": [
+                {"target": "P", "op": "add", "value": 8},
+                {"target": "V", "op": "add", "value": -4},
+                {"target": "O", "op": "add", "value": -2}
+              ],
+              "set_flags": {"act3_faction": "war_captains"}
+            },
+            {
+              "choice_id": "Q11_C1_B",
+              "text": "Law-thing coalition",
+              "effects": [
+                {"target": "V", "op": "add", "value": 8},
+                {"target": "O", "op": "add", "value": 7},
+                {"target": "P", "op": "add", "value": -2}
+              ],
+              "set_flags": {"act3_faction": "law_thing"}
+            },
+            {
+              "choice_id": "Q11_C1_C",
+              "text": "Ash circle compact",
+              "effects": [
+                {"target": "S", "op": "add", "value": 10},
+                {"target": "O", "op": "add", "value": -4},
+                {"target": "M", "op": "add", "value": 2}
+              ],
+              "set_flags": {"act3_faction": "ash_circle"}
+            }
+          ]
+        },
+        {
+          "node_id": "Q11_C2",
+          "prompt": "Set spring strategy.",
+          "choices": [
+            {
+              "choice_id": "Q11_C2_A",
+              "text": "Preemptive raids",
+              "effects": [
+                {"target": "P", "op": "add", "value": 6},
+                {"target": "W", "op": "add", "value": 2},
+                {"target": "M", "op": "add", "value": -2}
+              ],
+              "set_flags": {"spring_strategy": "preemptive_raids"}
+            },
+            {
+              "choice_id": "Q11_C2_B",
+              "text": "Harbor fortification",
+              "effects": [
+                {"target": "W", "op": "add", "value": 7},
+                {"target": "O", "op": "add", "value": 3},
+                {"target": "Tar", "op": "add", "value": -1}
+              ],
+              "set_flags": {"spring_strategy": "harbor_fortification"}
+            },
+            {
+              "choice_id": "Q11_C2_C",
+              "text": "Prophetic outreach",
+              "effects": [
+                {"target": "S", "op": "add", "value": 8},
+                {"target": "M", "op": "add", "value": 3},
+                {"target": "O", "op": "add", "value": -3}
+              ],
+              "set_flags": {"spring_strategy": "prophetic_outreach"}
+            }
+          ]
+        },
+        {
+          "node_id": "Q11_C3",
+          "prompt": "Set throne policy.",
+          "choices": [
+            {
+              "choice_id": "Q11_C3_A",
+              "text": "Single claimant",
+              "effects": [
+                {"target": "P", "op": "add", "value": 4},
+                {"target": "V", "op": "add", "value": -2},
+                {"target": "M", "op": "add", "value": -1}
+              ],
+              "set_flags": {"throne_policy": "single_claimant"}
+            },
+            {
+              "choice_id": "Q11_C3_B",
+              "text": "Dual regency",
+              "effects": [
+                {"target": "O", "op": "add", "value": 6},
+                {"target": "V", "op": "add", "value": 3},
+                {"target": "M", "op": "add", "value": 2}
+              ],
+              "set_flags": {"throne_policy": "dual_regency"}
+            },
+            {
+              "choice_id": "Q11_C3_C",
+              "text": "No throne, flotilla charter",
+              "effects": [
+                {"target": "O", "op": "add", "value": 5},
+                {"target": "P", "op": "add", "value": 2},
+                {"target": "S", "op": "add", "value": 2}
+              ],
+              "set_flags": {"throne_policy": "flotilla_charter"}
+            }
+          ]
+        }
+      ],
+      "scoring": {
+        "rules": [
+          {
+            "id": "faction_fit",
+            "expression": "faction_fit = ((ending_vector=='conquest' && act3_faction=='war_captains') ? 9 : (ending_vector=='accord' && act3_faction=='law_thing') ? 9 : (ending_vector=='ashen' && act3_faction=='ash_circle') ? 9 : (ending_vector=='exile' && act3_faction=='ash_circle') ? 5 : -4)"
+          },
+          {
+            "id": "q11_score",
+            "expression": "q11_score = clamp(30 + 0.20*O + 0.18*W + 0.16*M + 0.10*P + 0.10*V + faction_fit - (mutiny?8:0), 0, 100)"
+          }
+        ],
+        "final_score": "q11_score",
+        "bands": [
+          {
+            "min": 80,
+            "max": 100,
+            "label": "clean_success",
+            "effects": [{"target": "A2", "op": "add", "value": 8}],
+            "set_flags": {"Q11_result": "clean_success"}
+          },
+          {
+            "min": 65,
+            "max": 79,
+            "label": "costly_success",
+            "effects": [{"target": "A2", "op": "add", "value": 4}],
+            "set_flags": {"Q11_result": "costly_success"}
+          },
+          {
+            "min": 50,
+            "max": 64,
+            "label": "contested",
+            "effects": [{"target": "A2", "op": "add", "value": 0}],
+            "set_flags": {"Q11_result": "contested"}
+          },
+          {
+            "min": 0,
+            "max": 49,
+            "label": "failure",
+            "effects": [{"target": "A2", "op": "add", "value": -6}],
+            "set_flags": {"Q11_result": "failure"}
+          }
+        ]
+      }
+    },
+    {
+      "quest_id": "Q12_RIFT_AT_BJORVIK",
+      "order": 12,
+      "title": "Rift at Bjorvik",
+      "beat": [
+        "[Scout] 'The fjord splits in rumor before it splits in hulls.'",
+        "[Yrsa] 'Name the rift, or it names you.'"
+      ],
+      "nodes": [
+        {
+          "node_id": "Q12_C1",
+          "prompt": "Respond to the first rift signal.",
+          "choices": [
+            {
+              "choice_id": "Q12_C1_A",
+              "text": "Seal the narrows",
+              "effects": [
+                {"target": "W", "op": "add", "value": 6},
+                {"target": "V", "op": "add", "value": -3},
+                {"target": "Food", "op": "add", "value": -1}
+              ],
+              "set_flags": {"rift_response": "seal_narrows"}
+            },
+            {
+              "choice_id": "Q12_C1_B",
+              "text": "Open negotiations",
+              "effects": [
+                {"target": "O", "op": "add", "value": 7},
+                {"target": "V", "op": "add", "value": 5},
+                {"target": "M", "op": "add", "value": 2}
+              ],
+              "set_flags": {"rift_response": "open_negotiations"}
+            },
+            {
+              "choice_id": "Q12_C1_C",
+              "text": "Shadow emissaries",
+              "effects": [
+                {"target": "P", "op": "add", "value": 4},
+                {"target": "S", "op": "add", "value": 4},
+                {"target": "O", "op": "add", "value": -2}
+              ],
+              "set_flags": {"rift_response": "shadow_emissaries"}
+            }
+          ]
+        },
+        {
+          "node_id": "Q12_C2",
+          "prompt": "Set harbor law.",
+          "choices": [
+            {
+              "choice_id": "Q12_C2_A",
+              "text": "War levy law",
+              "effects": [
+                {"target": "P", "op": "add", "value": 5},
+                {"target": "M", "op": "add", "value": -3},
+                {"target": "Food", "op": "add", "value": 1}
+              ],
+              "set_flags": {"harbor_law": "war_levy"}
+            },
+            {
+              "choice_id": "Q12_C2_B",
+              "text": "Common harbor charter",
+              "effects": [
+                {"target": "O", "op": "add", "value": 6},
+                {"target": "V", "op": "add", "value": 3},
+                {"target": "M", "op": "add", "value": 3}
+              ],
+              "set_flags": {"harbor_law": "common_charter"}
+            },
+            {
+              "choice_id": "Q12_C2_C",
+              "text": "Seer exemption routes",
+              "effects": [
+                {"target": "S", "op": "add", "value": 8},
+                {"target": "O", "op": "add", "value": -4},
+                {"target": "Tar", "op": "add", "value": -1}
+              ],
+              "set_flags": {"harbor_law": "seer_exemption"}
+            }
+          ]
+        },
+        {
+          "node_id": "Q12_C3",
+          "prompt": "Define ritual burden.",
+          "choices": [
+            {
+              "choice_id": "Q12_C3_A",
+              "text": "No ritual cost",
+              "effects": [
+                {"target": "O", "op": "add", "value": 2},
+                {"target": "S", "op": "add", "value": -2}
+              ],
+              "set_flags": {"ritual_cost": "none"}
+            },
+            {
+              "choice_id": "Q12_C3_B",
+              "text": "Shared district rites",
+              "effects": [
+                {"target": "S", "op": "add", "value": 5},
+                {"target": "M", "op": "add", "value": 2},
+                {"target": "Food", "op": "add", "value": -1}
+              ],
+              "set_flags": {"ritual_cost": "shared"}
+            },
+            {
+              "choice_id": "Q12_C3_C",
+              "text": "Elite ash rites",
+              "effects": [
+                {"target": "S", "op": "add", "value": 9},
+                {"target": "M", "op": "add", "value": -2},
+                {"target": "O", "op": "add", "value": -3}
+              ],
+              "set_flags": {"ritual_cost": "elite"}
+            }
+          ]
+        }
+      ],
+      "scoring": {
+        "rules": [
+          {
+            "id": "rift_fit",
+            "expression": "rift_fit = ((ending_vector=='accord' && rift_response=='open_negotiations') ? 8 : (ending_vector=='conquest' && rift_response=='seal_narrows') ? 8 : (ending_vector=='ashen' && rift_response=='shadow_emissaries') ? 7 : (ending_vector=='exile' && rift_response=='shadow_emissaries') ? 8 : -3)"
+          },
+          {
+            "id": "q12_score",
+            "expression": "q12_score = clamp(29 + 0.20*O + 0.17*M + 0.15*V + 0.10*S + 0.10*W + rift_fit - (sickness?6:0), 0, 100)"
+          }
+        ],
+        "final_score": "q12_score",
+        "bands": [
+          {
+            "min": 80,
+            "max": 100,
+            "label": "clean_success",
+            "effects": [{"target": "A2", "op": "add", "value": 8}],
+            "set_flags": {"Q12_result": "clean_success"}
+          },
+          {
+            "min": 65,
+            "max": 79,
+            "label": "costly_success",
+            "effects": [{"target": "A2", "op": "add", "value": 4}],
+            "set_flags": {"Q12_result": "costly_success"}
+          },
+          {
+            "min": 50,
+            "max": 64,
+            "label": "contested",
+            "effects": [{"target": "A2", "op": "add", "value": 0}],
+            "set_flags": {"Q12_result": "contested"}
+          },
+          {
+            "min": 0,
+            "max": 49,
+            "label": "failure",
+            "effects": [{"target": "A2", "op": "add", "value": -6}],
+            "set_flags": {"Q12_result": "failure"}
+          }
+        ]
+      }
+    },
+    {
+      "quest_id": "Q13_HARBOR_OF_BONES",
+      "order": 13,
+      "title": "Harbor of Bones",
+      "beat": [
+        "[Leif] 'Every old wreck is now a shrine or a warning.'",
+        "[Astrid] 'Choose which one we can afford.'"
+      ],
+      "nodes": [
+        {
+          "node_id": "Q13_C1",
+          "prompt": "Treat wreck districts.",
+          "choices": [
+            {
+              "choice_id": "Q13_C1_A",
+              "text": "Strip and rebuild",
+              "effects": [
+                {"target": "Timber", "op": "add", "value": 2},
+                {"target": "W", "op": "add", "value": 4},
+                {"target": "O", "op": "add", "value": -3}
+              ]
+            },
+            {
+              "choice_id": "Q13_C1_B",
+              "text": "Memorial preserve",
+              "effects": [
+                {"target": "O", "op": "add", "value": 6},
+                {"target": "M", "op": "add", "value": 4},
+                {"target": "W", "op": "add", "value": -2}
+              ]
+            },
+            {
+              "choice_id": "Q13_C1_C",
+              "text": "Seer sanctification",
+              "effects": [
+                {"target": "S", "op": "add", "value": 8},
+                {"target": "O", "op": "add", "value": -4},
+                {"target": "M", "op": "add", "value": -1}
+              ]
+            }
+          ]
+        },
+        {
+          "node_id": "Q13_C2",
+          "prompt": "Sign a northwind pact.",
+          "choices": [
+            {
+              "choice_id": "Q13_C2_A",
+              "text": "Pirate-only pact",
+              "effects": [
+                {"target": "P", "op": "add", "value": 7},
+                {"target": "V", "op": "add", "value": -5}
+              ],
+              "set_flags": {"northwind_pact": "pirate_only"}
+            },
+            {
+              "choice_id": "Q13_C2_B",
+              "text": "Dual-signature pact",
+              "effects": [
+                {"target": "O", "op": "add", "value": 8},
+                {"target": "P", "op": "add", "value": 2},
+                {"target": "V", "op": "add", "value": 2}
+              ],
+              "set_flags": {"northwind_pact": "dual_signature"}
+            },
+            {
+              "choice_id": "Q13_C2_C",
+              "text": "Ash witness pact",
+              "effects": [
+                {"target": "S", "op": "add", "value": 6},
+                {"target": "O", "op": "add", "value": -2},
+                {"target": "M", "op": "add", "value": 1}
+              ],
+              "set_flags": {"northwind_pact": "ash_witness"}
+            }
+          ]
+        },
+        {
+          "node_id": "Q13_C3",
+          "prompt": "Define crown status.",
+          "choices": [
+            {
+              "choice_id": "Q13_C3_A",
+              "text": "Crown minted",
+              "effects": [
+                {"target": "P", "op": "add", "value": 6},
+                {"target": "O", "op": "add", "value": -3}
+              ],
+              "set_flags": {"crown_status": "minted"}
+            },
+            {
+              "choice_id": "Q13_C3_B",
+              "text": "Crown deferred",
+              "effects": [
+                {"target": "O", "op": "add", "value": 5},
+                {"target": "M", "op": "add", "value": 2}
+              ],
+              "set_flags": {"crown_status": "deferred"}
+            },
+            {
+              "choice_id": "Q13_C3_C",
+              "text": "Crown dissolved",
+              "effects": [
+                {"target": "O", "op": "add", "value": 4},
+                {"target": "S", "op": "add", "value": 3}
+              ],
+              "set_flags": {"crown_status": "dissolved"}
+            }
+          ]
+        }
+      ],
+      "scoring": {
+        "rules": [
+          {
+            "id": "pact_fit",
+            "expression": "pact_fit = ((ending_vector=='conquest' && northwind_pact=='pirate_only') ? 8 : (ending_vector=='accord' && northwind_pact=='dual_signature') ? 8 : (ending_vector=='ashen' && northwind_pact=='ash_witness') ? 8 : (ending_vector=='exile' && northwind_pact=='dual_signature') ? 5 : -3)"
+          },
+          {
+            "id": "q13_score",
+            "expression": "q13_score = clamp(31 + 0.18*O + 0.18*W + 0.15*M + 0.12*P + 0.12*V + 0.08*S + pact_fit - (Wounds*4), 0, 100)"
+          }
+        ],
+        "final_score": "q13_score",
+        "bands": [
+          {
+            "min": 80,
+            "max": 100,
+            "label": "clean_success",
+            "effects": [{"target": "A2", "op": "add", "value": 8}],
+            "set_flags": {"Q13_result": "clean_success"}
+          },
+          {
+            "min": 65,
+            "max": 79,
+            "label": "costly_success",
+            "effects": [{"target": "A2", "op": "add", "value": 4}],
+            "set_flags": {"Q13_result": "costly_success"}
+          },
+          {
+            "min": 50,
+            "max": 64,
+            "label": "contested",
+            "effects": [{"target": "A2", "op": "add", "value": 0}],
+            "set_flags": {"Q13_result": "contested"}
+          },
+          {
+            "min": 0,
+            "max": 49,
+            "label": "failure",
+            "effects": [{"target": "A2", "op": "add", "value": -6}],
+            "set_flags": {"Q13_result": "failure"}
+          }
+        ]
+      }
+    },
+    {
+      "quest_id": "Q14_TEMPEST_PARLIAMENT",
+      "order": 14,
+      "title": "Tempest Parliament",
+      "beat": [
+        "[Envoy] 'Parliament meets while mastheads crack in wind.'",
+        "[Sigrid] 'Then our law must hold faster than rope.'"
+      ],
+      "nodes": [
+        {
+          "node_id": "Q14_C1",
+          "prompt": "Open parliamentary order.",
+          "choices": [
+            {
+              "choice_id": "Q14_C1_A",
+              "text": "Command decree",
+              "effects": [
+                {"target": "P", "op": "add", "value": 6},
+                {"target": "O", "op": "add", "value": -5},
+                {"target": "M", "op": "add", "value": -1}
+              ]
+            },
+            {
+              "choice_id": "Q14_C1_B",
+              "text": "Rotating chair",
+              "effects": [
+                {"target": "O", "op": "add", "value": 7},
+                {"target": "V", "op": "add", "value": 4},
+                {"target": "M", "op": "add", "value": 2}
+              ]
+            },
+            {
+              "choice_id": "Q14_C1_C",
+              "text": "Oracular chamber",
+              "effects": [
+                {"target": "S", "op": "add", "value": 9},
+                {"target": "O", "op": "add", "value": -4},
+                {"target": "V", "op": "add", "value": -2}
+              ]
+            }
+          ]
+        },
+        {
+          "node_id": "Q14_C2",
+          "prompt": "Resolve dockworker strike.",
+          "choices": [
+            {
+              "choice_id": "Q14_C2_A",
+              "text": "Force return to work",
+              "effects": [
+                {"target": "W", "op": "add", "value": 4},
+                {"target": "M", "op": "add", "value": -5},
+                {"target": "O", "op": "add", "value": -3}
+              ]
+            },
+            {
+              "choice_id": "Q14_C2_B",
+              "text": "Wage compromise",
+              "effects": [
+                {"target": "M", "op": "add", "value": 5},
+                {"target": "O", "op": "add", "value": 4},
+                {"target": "Food", "op": "add", "value": -1}
+              ]
+            },
+            {
+              "choice_id": "Q14_C2_C",
+              "text": "Ritual labor oath",
+              "effects": [
+                {"target": "S", "op": "add", "value": 6},
+                {"target": "M", "op": "add", "value": 1},
+                {"target": "O", "op": "add", "value": -2}
+              ]
+            }
+          ]
+        },
+        {
+          "node_id": "Q14_C3",
+          "prompt": "Allocate storm reserves.",
+          "choices": [
+            {
+              "choice_id": "Q14_C3_A",
+              "text": "Fleet reserves",
+              "effects": [
+                {"target": "Tar", "op": "add", "value": 1},
+                {"target": "Timber", "op": "add", "value": 1},
+                {"target": "Food", "op": "add", "value": -2}
+              ]
+            },
+            {
+              "choice_id": "Q14_C3_B",
+              "text": "Civil reserves",
+              "effects": [
+                {"target": "Food", "op": "add", "value": 2},
+                {"target": "Med", "op": "add", "value": 1},
+                {"target": "W", "op": "add", "value": -1}
+              ]
+            },
+            {
+              "choice_id": "Q14_C3_C",
+              "text": "Divided reserves",
+              "effects": [
+                {"target": "Food", "op": "add", "value": 1},
+                {"target": "Tar", "op": "add", "value": 1},
+                {"target": "M", "op": "add", "value": 1}
+              ]
+            }
+          ]
+        }
+      ],
+      "scoring": {
+        "rules": [
+          {
+            "id": "parliament_term",
+            "expression": "parliament_term = (choice('Q14_C1')=='Q14_C1_A' ? -3 : choice('Q14_C1')=='Q14_C1_B' ? 6 : 3)"
+          },
+          {
+            "id": "q14_score",
+            "expression": "q14_score = clamp(27 + 0.22*O + 0.16*M + 0.14*W + 0.10*P + 0.10*V + 0.08*S + parliament_term - (famine?6:0), 0, 100)"
+          }
+        ],
+        "final_score": "q14_score",
+        "bands": [
+          {
+            "min": 80,
+            "max": 100,
+            "label": "clean_success",
+            "effects": [{"target": "A2", "op": "add", "value": 8}],
+            "set_flags": {"Q14_result": "clean_success"}
+          },
+          {
+            "min": 65,
+            "max": 79,
+            "label": "costly_success",
+            "effects": [{"target": "A2", "op": "add", "value": 4}],
+            "set_flags": {"Q14_result": "costly_success"}
+          },
+          {
+            "min": 50,
+            "max": 64,
+            "label": "contested",
+            "effects": [{"target": "A2", "op": "add", "value": 0}],
+            "set_flags": {"Q14_result": "contested"}
+          },
+          {
+            "min": 0,
+            "max": 49,
+            "label": "failure",
+            "effects": [{"target": "A2", "op": "add", "value": -6}],
+            "set_flags": {"Q14_result": "failure"}
+          }
+        ]
+      }
+    },
+    {
+      "quest_id": "Q15_CROWN_OF_THIN_ICE",
+      "order": 15,
+      "title": "Crown of Thin Ice",
+      "beat": [
+        "[Hakon] 'Spring does not forgive winter's lies.'",
+        "[Sigrid] 'Then we finish with one truth everyone can live under.'"
+      ],
+      "nodes": [
+        {
+          "node_id": "Q15_C1",
+          "prompt": "Name the spring settlement.",
+          "choices": [
+            {
+              "choice_id": "Q15_C1_A",
+              "text": "Warlord mandate",
+              "effects": [
+                {"target": "P", "op": "add", "value": 10},
+                {"target": "V", "op": "add", "value": -6},
+                {"target": "O", "op": "add", "value": -3}
+              ]
+            },
+            {
+              "choice_id": "Q15_C1_B",
+              "text": "Treaty confederacy",
+              "effects": [
+                {"target": "O", "op": "add", "value": 10},
+                {"target": "V", "op": "add", "value": 6},
+                {"target": "P", "op": "add", "value": -2}
+              ]
+            },
+            {
+              "choice_id": "Q15_C1_C",
+              "text": "Ash regency flotilla",
+              "effects": [
+                {"target": "S", "op": "add", "value": 12},
+                {"target": "O", "op": "add", "value": -5},
+                {"target": "M", "op": "add", "value": 2}
+              ]
+            }
+          ]
+        },
+        {
+          "node_id": "Q15_C2",
+          "prompt": "Handle oath fractures.",
+          "choices": [
+            {
+              "choice_id": "Q15_C2_A",
+              "text": "Punitive tribunals",
+              "effects": [
+                {"target": "P", "op": "add", "value": 4},
+                {"target": "O", "op": "add", "value": -6},
+                {"target": "M", "op": "add", "value": -3}
+              ]
+            },
+            {
+              "choice_id": "Q15_C2_B",
+              "text": "Public reconciliation",
+              "effects": [
+                {"target": "O", "op": "add", "value": 8},
+                {"target": "M", "op": "add", "value": 4},
+                {"target": "V", "op": "add", "value": 2}
+              ]
+            },
+            {
+              "choice_id": "Q15_C2_C",
+              "text": "Seer arbitration",
+              "effects": [
+                {"target": "S", "op": "add", "value": 8},
+                {"target": "O", "op": "add", "value": -2},
+                {"target": "M", "op": "add", "value": 1}
+              ]
+            }
+          ]
+        },
+        {
+          "node_id": "Q15_C3",
+          "prompt": "Choose the final seal.",
+          "choices": [
+            {
+              "choice_id": "Q15_C3_A",
+              "text": "Iron seal",
+              "effects": [
+                {"target": "P", "op": "add", "value": 5},
+                {"target": "O", "op": "add", "value": -2}
+              ]
+            },
+            {
+              "choice_id": "Q15_C3_B",
+              "text": "Law-stone seal",
+              "effects": [
+                {"target": "O", "op": "add", "value": 7},
+                {"target": "V", "op": "add", "value": 3}
+              ]
+            },
+            {
+              "choice_id": "Q15_C3_C",
+              "text": "Ash-sigil seal",
+              "effects": [
+                {"target": "S", "op": "add", "value": 7},
+                {"target": "O", "op": "add", "value": -3},
+                {"target": "M", "op": "add", "value": 2}
+              ]
+            }
+          ]
+        }
+      ],
+      "scoring": {
+        "rules": [
+          {
+            "id": "settlement_fit",
+            "expression": "settlement_fit = ((ending_vector=='conquest' && choice('Q15_C1')=='Q15_C1_A') ? 10 : (ending_vector=='accord' && choice('Q15_C1')=='Q15_C1_B') ? 10 : (ending_vector=='ashen' && choice('Q15_C1')=='Q15_C1_C') ? 10 : (ending_vector=='exile' && choice('Q15_C1')=='Q15_C1_B') ? 5 : -4)"
+          },
+          {
+            "id": "seal_term",
+            "expression": "seal_term = (choice('Q15_C3')=='Q15_C3_A' ? 2 : choice('Q15_C3')=='Q15_C3_B' ? 6 : 4)"
+          },
+          {
+            "id": "q15_score",
+            "expression": "q15_score = clamp(35 + 0.19*O + 0.17*M + 0.16*W + 0.14*P + 0.12*V + 0.10*S + settlement_fit + seal_term - (oath_shattered?10:0), 0, 100)"
+          }
+        ],
+        "final_score": "q15_score",
+        "bands": [
+          {
+            "min": 80,
+            "max": 100,
+            "label": "clean_success",
+            "effects": [{"target": "A2", "op": "add", "value": 8}],
+            "set_flags": {"Q15_result": "clean_success"}
+          },
+          {
+            "min": 65,
+            "max": 79,
+            "label": "costly_success",
+            "effects": [{"target": "A2", "op": "add", "value": 4}],
+            "set_flags": {"Q15_result": "costly_success"}
+          },
+          {
+            "min": 50,
+            "max": 64,
+            "label": "contested",
+            "effects": [{"target": "A2", "op": "add", "value": 0}],
+            "set_flags": {"Q15_result": "contested"}
+          },
+          {
+            "min": 0,
+            "max": 49,
+            "label": "failure",
+            "effects": [{"target": "A2", "op": "add", "value": -6}],
+            "set_flags": {"Q15_result": "failure"}
+          }
+        ]
+      },
+      "post_rules": [
+        {
+          "id": "act4_start_warlord",
+          "expression": "if (q15_score>=78 && ending_vector=='conquest') then act4_start_state='IRON_HEGEMONY'"
+        },
+        {
+          "id": "act4_start_treaty",
+          "expression": "if (q15_score>=78 && ending_vector=='accord') then act4_start_state='CHARTER_COMMONWEALTH'"
+        },
+        {
+          "id": "act4_start_ashen",
+          "expression": "if (q15_score>=78 && ending_vector=='ashen') then act4_start_state='EMBER_ORACLE'"
+        },
+        {
+          "id": "act4_start_ghost",
+          "expression": "if (q15_score>=70 && ending_vector=='exile') then act4_start_state='DRIFT_REALM'"
+        },
+        {
+          "id": "act4_start_fallback",
+          "expression": "if (act4_start_state is null) then act4_start_state='BROKEN_THING'"
+        }
+      ]
+    }
+  ]
+}

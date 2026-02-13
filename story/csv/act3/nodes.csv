@@ -1,0 +1,16 @@
+"quest_id","node_id","prompt","choice_count"
+"Q11_BREAKWATER_COUNCIL","Q11_C1","Choose a faction anchor.",3
+"Q11_BREAKWATER_COUNCIL","Q11_C2","Set spring strategy.",3
+"Q11_BREAKWATER_COUNCIL","Q11_C3","Set throne policy.",3
+"Q12_RIFT_AT_BJORVIK","Q12_C1","Respond to the first rift signal.",3
+"Q12_RIFT_AT_BJORVIK","Q12_C2","Set harbor law.",3
+"Q12_RIFT_AT_BJORVIK","Q12_C3","Define ritual burden.",3
+"Q13_HARBOR_OF_BONES","Q13_C1","Treat wreck districts.",3
+"Q13_HARBOR_OF_BONES","Q13_C2","Sign a northwind pact.",3
+"Q13_HARBOR_OF_BONES","Q13_C3","Define crown status.",3
+"Q14_TEMPEST_PARLIAMENT","Q14_C1","Open parliamentary order.",3
+"Q14_TEMPEST_PARLIAMENT","Q14_C2","Resolve dockworker strike.",3
+"Q14_TEMPEST_PARLIAMENT","Q14_C3","Allocate storm reserves.",3
+"Q15_CROWN_OF_THIN_ICE","Q15_C1","Name the spring settlement.",3
+"Q15_CROWN_OF_THIN_ICE","Q15_C2","Handle oath fractures.",3
+"Q15_CROWN_OF_THIN_ICE","Q15_C3","Choose the final seal.",3

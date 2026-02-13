@@ -3,7 +3,7 @@
 ## Next Milestones
 
 1. Act 3 Content Pack
-- Create quests `Q11`-`Q15` keyed from `act3_start_state`.
+- Expand scaffolded quests `Q11`-`Q15` keyed from `act3_start_state` with production narrative and balance passes.
 - Define final-ending reconciliation with ending matrix.
 
 2. Runtime Evaluator Implementation

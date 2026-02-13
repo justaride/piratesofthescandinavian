@@ -1,6 +1,6 @@
 # Pirates of the Scandinavian - Act 2 Data Pack
 
-This package contains a machine-readable quest schema and Act 2 content (Quests 6-10) in JSON + CSV.
+This package contains a machine-readable quest schema, a production Act 2 content pack (Quests 6-10), and an Act 3 scaffold pack (Quests 11-15).
 
 ## Files
 
@@ -8,6 +8,8 @@ This package contains a machine-readable quest schema and Act 2 content (Quests 
   - JSON Schema for validating quest packs.
 - `story/data/act2-quest-pack.json`
   - Source-of-truth quest content for Act 2.
+- `story/data/act3-quest-pack.json`
+  - Scaffold quest content for Act 3 using the same schema and runtime model.
 - `story/csv/quests.csv`
   - One row per quest.
 - `story/csv/nodes.csv`
@@ -22,6 +24,21 @@ This package contains a machine-readable quest schema and Act 2 content (Quests 
   - Score bands and quest-result effects.
 - `story/csv/meta.csv`
   - Pack-level meta expressions.
+- `story/csv/act3/*.csv`
+  - Normalized table export for the Act 3 scaffold pack.
+- `story/csv/act2/*.csv`
+  - Normalized table export for the Act 2 pack.
+
+## Exporting CSV
+
+- Act 2 export:
+  - `npm run export:csv:act2`
+- Act 3 export:
+  - `npm run export:csv:act3`
+- Export both:
+  - `npm run export:csv:all`
+- Reusable exporter:
+  - `node scripts/export-pack-csv.mjs --pack <pack-json> --out <output-dir>`
 
 ## Join Keys
 

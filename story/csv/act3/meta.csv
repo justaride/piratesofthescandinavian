@@ -1,0 +1,3 @@
+"key","value"
+"A2_seed_expression","A2 = (chapter1=='dominant'?18:chapter1=='stable'?10:chapter1=='fragile'?2:-8) + (ending_vector=='conquest'?8:ending_vector=='accord'?8:ending_vector=='ashen'?6:ending_vector=='exile'?5:0) - (famine?6:0)"
+"act3_start_seed","act3_start_state = (ending_vector=='conquest' ? 'WARLORD_ASCENDANT' : ending_vector=='accord' ? 'TREATY_REGENT' : ending_vector=='ashen' ? 'ASH_PROPHET' : 'GHOST_ADMIRAL')"

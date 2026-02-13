@@ -1,0 +1,16 @@
+"quest_id","node_id","prompt","choice_count"
+"Q6_CROWN_OR_COVENANT","Q6_C1","Choose governance model.",3
+"Q6_CROWN_OR_COVENANT","Q6_C2","Handle incoming refugee boats.",3
+"Q6_CROWN_OR_COVENANT","Q6_C3","Who sees the ring?",3
+"Q7_WHALE_ROAD","Q7_C1","Select convoy route.",4
+"Q7_WHALE_ROAD","Q7_C2","Set cargo distribution policy.",3
+"Q7_WHALE_ROAD","Q7_C3","Blizzard decision.",3
+"Q8_KNIVES_UNDER_SNOW","Q8_C1","Choose investigation method.",4
+"Q8_KNIVES_UNDER_SNOW","Q8_C2","Name the traitor.",4
+"Q8_KNIVES_UNDER_SNOW","Q8_C3","Set punishment.",3
+"Q9_SIEGE_OF_NESODDEN","Q9_C1","Choose battle plan.",4
+"Q9_SIEGE_OF_NESODDEN","Q9_C2","Call allies.",4
+"Q9_SIEGE_OF_NESODDEN","Q9_C3","Gate crisis resolution.",4
+"Q10_THAW_RECKONING","Q10_C1","Choose political claim.",5
+"Q10_THAW_RECKONING","Q10_C2","Choose ring fate.",5
+"Q10_THAW_RECKONING","Q10_C3","Choose final oath form.",4
