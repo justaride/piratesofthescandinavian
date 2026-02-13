@@ -1,0 +1,1039 @@
+{
+  "version": "1.0.0",
+  "formula_language": "expr-v1",
+  "act": 2,
+  "stats": [
+    "P",
+    "V",
+    "O",
+    "W",
+    "S",
+    "M",
+    "Food",
+    "Med",
+    "Tar",
+    "Timber",
+    "Wounds",
+    "A2"
+  ],
+  "flags": [
+    "ending_vector",
+    "chapter1",
+    "famine",
+    "oath_shattered",
+    "oath_cracked",
+    "mutiny",
+    "sickness",
+    "ledger_obtained",
+    "thrall_network",
+    "governance",
+    "ring_visibility",
+    "route_plan",
+    "cargo_policy",
+    "blizzard_call",
+    "investigation_method",
+    "accusation",
+    "sentence",
+    "innocent_blood",
+    "battle_plan",
+    "ally_call",
+    "gate_crisis",
+    "claim",
+    "ring_fate",
+    "oath_form",
+    "act3_start_state"
+  ],
+  "meta": {
+    "A2_seed_expression": "A2 = (chapter1=='dominant'?15:chapter1=='stable'?8:chapter1=='fragile'?0:-10) + (ending_vector=='conquest'?6:ending_vector=='accord'?6:ending_vector=='ashen'?5:ending_vector=='exile'?3:0) - (famine?8:0)",
+    "A2_delta_rule": "if score>=80 => +8; 65-79 => +4; 50-64 => +0; <50 => -6"
+  },
+  "quests": [
+    {
+      "quest_id": "Q6_CROWN_OR_COVENANT",
+      "order": 6,
+      "title": "Crown or Covenant",
+      "beat": [
+        "[Sigrid] 'Pick a rule before winter picks one for us.'",
+        "[Hakon] 'Steel or law. Decide.'",
+        "[Yrsa] 'Ash is also a law.'"
+      ],
+      "nodes": [
+        {
+          "node_id": "Q6_C1",
+          "prompt": "Choose governance model.",
+          "choices": [
+            {
+              "choice_id": "Q6_C1_A",
+              "text": "Iron Tithe",
+              "effects": [
+                {"target": "P", "op": "add", "value": 10},
+                {"target": "V", "op": "add", "value": -8},
+                {"target": "O", "op": "add", "value": -6},
+                {"target": "W", "op": "add", "value": 4},
+                {"target": "M", "op": "add", "value": -2}
+              ],
+              "set_flags": {
+                "governance": "iron_tithe"
+              }
+            },
+            {
+              "choice_id": "Q6_C1_B",
+              "text": "Fjord Charter",
+              "effects": [
+                {"target": "V", "op": "add", "value": 8},
+                {"target": "O", "op": "add", "value": 10},
+                {"target": "P", "op": "add", "value": -3},
+                {"target": "M", "op": "add", "value": 3},
+                {"target": "W", "op": "add", "value": 2}
+              ],
+              "set_flags": {
+                "governance": "fjord_charter"
+              }
+            },
+            {
+              "choice_id": "Q6_C1_C",
+              "text": "Ash Covenant",
+              "effects": [
+                {"target": "S", "op": "add", "value": 12},
+                {"target": "O", "op": "add", "value": -8},
+                {"target": "W", "op": "add", "value": 4},
+                {"target": "M", "op": "add", "value": -1}
+              ],
+              "set_flags": {
+                "governance": "ash_covenant"
+              }
+            }
+          ]
+        },
+        {
+          "node_id": "Q6_C2",
+          "prompt": "Handle incoming refugee boats.",
+          "choices": [
+            {
+              "choice_id": "Q6_C2_A",
+              "text": "Turn boats away",
+              "effects": [
+                {"target": "Food", "op": "add", "value": 2},
+                {"target": "W", "op": "add", "value": 3},
+                {"target": "O", "op": "add", "value": -8},
+                {"target": "V", "op": "add", "value": -5},
+                {"target": "M", "op": "add", "value": -3}
+              ]
+            },
+            {
+              "choice_id": "Q6_C2_B",
+              "text": "Accept and ration",
+              "effects": [
+                {"target": "Food", "op": "add", "value": -2},
+                {"target": "Med", "op": "add", "value": -1},
+                {"target": "O", "op": "add", "value": 8},
+                {"target": "V", "op": "add", "value": 4},
+                {"target": "M", "op": "add", "value": 5}
+              ]
+            },
+            {
+              "choice_id": "Q6_C2_C",
+              "text": "Smuggle selected families",
+              "effects": [
+                {"target": "Food", "op": "add", "value": -1},
+                {"target": "O", "op": "add", "value": 2},
+                {"target": "M", "op": "add", "value": 2},
+                {"target": "S", "op": "add", "value": 2}
+              ],
+              "notes": "If ending_vector == 'exile', apply additional stealth bonus in runtime resolver."
+            }
+          ]
+        },
+        {
+          "node_id": "Q6_C3",
+          "prompt": "Who sees the ring?",
+          "choices": [
+            {
+              "choice_id": "Q6_C3_A",
+              "text": "Show crew only",
+              "effects": [
+                {"target": "P", "op": "add", "value": 6},
+                {"target": "M", "op": "add", "value": 3},
+                {"target": "O", "op": "add", "value": 2}
+              ],
+              "set_flags": {
+                "ring_visibility": "crew_only"
+              }
+            },
+            {
+              "choice_id": "Q6_C3_B",
+              "text": "Show jarls publicly",
+              "effects": [
+                {"target": "V", "op": "add", "value": 7},
+                {"target": "O", "op": "add", "value": 6},
+                {"target": "P", "op": "add", "value": -2}
+              ],
+              "set_flags": {
+                "ring_visibility": "public_jarls"
+              }
+            },
+            {
+              "choice_id": "Q6_C3_C",
+              "text": "Give to seers for reading",
+              "effects": [
+                {"target": "S", "op": "add", "value": 10},
+                {"target": "O", "op": "add", "value": -6}
+              ],
+              "set_flags": {
+                "ring_visibility": "seer_reading"
+              }
+            }
+          ]
+        }
+      ],
+      "scoring": {
+        "rules": [
+          {
+            "id": "fit_bonus",
+            "expression": "fit_bonus = ((ending_vector=='conquest' && governance=='iron_tithe') ? 10 : (ending_vector=='accord' && governance=='fjord_charter') ? 10 : (ending_vector=='ashen' && governance=='ash_covenant') ? 10 : (ending_vector=='exile' && governance=='ash_covenant') ? 4 : -4)"
+          },
+          {
+            "id": "humanity",
+            "expression": "humanity = (choice('Q6_C2')=='Q6_C2_A' ? -8 : choice('Q6_C2')=='Q6_C2_B' ? 8 : 2)"
+          },
+          {
+            "id": "q6_score",
+            "expression": "q6_score = clamp(32 + 0.18*W + 0.18*M + 0.18*O + fit_bonus + humanity - (famine?8:0) - (oath_shattered?10:0), 0, 100)"
+          }
+        ],
+        "final_score": "q6_score",
+        "bands": [
+          {
+            "min": 80,
+            "max": 100,
+            "label": "clean_success",
+            "effects": [{"target": "A2", "op": "add", "value": 8}],
+            "set_flags": {"Q6_result": "clean_success"}
+          },
+          {
+            "min": 65,
+            "max": 79,
+            "label": "costly_success",
+            "effects": [{"target": "A2", "op": "add", "value": 4}],
+            "set_flags": {"Q6_result": "costly_success"}
+          },
+          {
+            "min": 50,
+            "max": 64,
+            "label": "contested",
+            "effects": [{"target": "A2", "op": "add", "value": 0}],
+            "set_flags": {"Q6_result": "contested"}
+          },
+          {
+            "min": 0,
+            "max": 49,
+            "label": "failure",
+            "effects": [{"target": "A2", "op": "add", "value": -6}],
+            "set_flags": {"Q6_result": "failure"}
+          }
+        ]
+      }
+    },
+    {
+      "quest_id": "Q7_WHALE_ROAD",
+      "order": 7,
+      "title": "Whale Road Convoy",
+      "beat": [
+        "[Astrid] 'If convoy fails, no one eats.'",
+        "[Leif] 'If convoy slows, everyone dies.'"
+      ],
+      "nodes": [
+        {
+          "node_id": "Q7_C1",
+          "prompt": "Select convoy route.",
+          "choices": [
+            {
+              "choice_id": "Q7_C1_A",
+              "text": "Ice-channel stealth",
+              "effects": [
+                {"target": "O", "op": "add", "value": 4},
+                {"target": "W", "op": "add", "value": 6},
+                {"target": "P", "op": "add", "value": 2}
+              ],
+              "set_flags": {"route_plan": "ice_stealth"}
+            },
+            {
+              "choice_id": "Q7_C1_B",
+              "text": "Open-sea strike run",
+              "effects": [
+                {"target": "P", "op": "add", "value": 8},
+                {"target": "W", "op": "add", "value": 4},
+                {"target": "V", "op": "add", "value": -4},
+                {"target": "Wounds", "op": "add", "value": 1}
+              ],
+              "set_flags": {"route_plan": "open_sea"}
+            },
+            {
+              "choice_id": "Q7_C1_C",
+              "text": "Village-chain escort pact",
+              "effects": [
+                {"target": "V", "op": "add", "value": 8},
+                {"target": "O", "op": "add", "value": 6},
+                {"target": "W", "op": "add", "value": 5},
+                {"target": "P", "op": "add", "value": -2}
+              ],
+              "set_flags": {"route_plan": "escort_pact"}
+            },
+            {
+              "choice_id": "Q7_C1_D",
+              "text": "Ash-fog ritual route",
+              "effects": [
+                {"target": "S", "op": "add", "value": 10},
+                {"target": "W", "op": "add", "value": 5},
+                {"target": "O", "op": "add", "value": -5}
+              ],
+              "set_flags": {"route_plan": "ash_fog"}
+            }
+          ]
+        },
+        {
+          "node_id": "Q7_C2",
+          "prompt": "Set cargo distribution policy.",
+          "choices": [
+            {
+              "choice_id": "Q7_C2_A",
+              "text": "Pirate cargo first",
+              "effects": [
+                {"target": "P", "op": "add", "value": 6},
+                {"target": "Food", "op": "add", "value": 3},
+                {"target": "V", "op": "add", "value": -6},
+                {"target": "O", "op": "add", "value": -4}
+              ],
+              "set_flags": {"cargo_policy": "pirate_first"}
+            },
+            {
+              "choice_id": "Q7_C2_B",
+              "text": "Equal split",
+              "effects": [
+                {"target": "O", "op": "add", "value": 8},
+                {"target": "V", "op": "add", "value": 5},
+                {"target": "M", "op": "add", "value": 4},
+                {"target": "Food", "op": "add", "value": 1}
+              ],
+              "set_flags": {"cargo_policy": "equal_split"}
+            },
+            {
+              "choice_id": "Q7_C2_C",
+              "text": "Decoy convoy",
+              "effects": [
+                {"target": "S", "op": "add", "value": 4},
+                {"target": "P", "op": "add", "value": 3},
+                {"target": "O", "op": "add", "value": -6},
+                {"target": "M", "op": "add", "value": -2}
+              ],
+              "set_flags": {"cargo_policy": "decoy"}
+            }
+          ]
+        },
+        {
+          "node_id": "Q7_C3",
+          "prompt": "Blizzard decision.",
+          "choices": [
+            {
+              "choice_id": "Q7_C3_A",
+              "text": "Dump silver, save food",
+              "effects": [
+                {"target": "W", "op": "add", "value": 4},
+                {"target": "M", "op": "add", "value": 2},
+                {"target": "P", "op": "add", "value": -2}
+              ],
+              "set_flags": {"blizzard_call": "save_food"}
+            },
+            {
+              "choice_id": "Q7_C3_B",
+              "text": "Keep all cargo",
+              "effects": [
+                {"target": "P", "op": "add", "value": 4},
+                {"target": "M", "op": "add", "value": -6},
+                {"target": "W", "op": "add", "value": -2},
+                {"target": "Wounds", "op": "add", "value": 1}
+              ],
+              "set_flags": {"blizzard_call": "keep_all"}
+            },
+            {
+              "choice_id": "Q7_C3_C",
+              "text": "Rescue civilians first",
+              "effects": [
+                {"target": "O", "op": "add", "value": 10},
+                {"target": "V", "op": "add", "value": 6},
+                {"target": "M", "op": "add", "value": 3},
+                {"target": "Food", "op": "add", "value": -1}
+              ],
+              "set_flags": {"blizzard_call": "rescue_civilians"}
+            }
+          ]
+        }
+      ],
+      "scoring": {
+        "rules": [
+          {
+            "id": "route_fit",
+            "expression": "route_fit = ((ending_vector=='conquest' && route_plan=='open_sea') ? 8 : (ending_vector=='accord' && route_plan=='escort_pact') ? 8 : (ending_vector=='ashen' && route_plan=='ash_fog') ? 8 : (ending_vector=='exile' && route_plan=='ice_stealth') ? 8 : -3)"
+          },
+          {
+            "id": "supply_term",
+            "expression": "supply_term = 4*Food + 2*Med + 2*Tar"
+          },
+          {
+            "id": "q7_score",
+            "expression": "q7_score = clamp(25 + 0.20*W + 0.14*M + 0.12*O + route_fit + supply_term - (Wounds*5) - (sickness?6:0), 0, 100)"
+          }
+        ],
+        "final_score": "q7_score",
+        "bands": [
+          {
+            "min": 80,
+            "max": 100,
+            "label": "clean_success",
+            "effects": [{"target": "A2", "op": "add", "value": 8}],
+            "set_flags": {"Q7_result": "clean_success"}
+          },
+          {
+            "min": 65,
+            "max": 79,
+            "label": "costly_success",
+            "effects": [{"target": "A2", "op": "add", "value": 4}],
+            "set_flags": {"Q7_result": "costly_success"}
+          },
+          {
+            "min": 50,
+            "max": 64,
+            "label": "contested",
+            "effects": [{"target": "A2", "op": "add", "value": 0}],
+            "set_flags": {"Q7_result": "contested"}
+          },
+          {
+            "min": 0,
+            "max": 49,
+            "label": "failure",
+            "effects": [{"target": "A2", "op": "add", "value": -6}],
+            "set_flags": {"Q7_result": "failure"}
+          }
+        ]
+      }
+    },
+    {
+      "quest_id": "Q8_KNIVES_UNDER_SNOW",
+      "order": 8,
+      "title": "Knives Under Snow",
+      "beat": [
+        "[Sigrid] 'Someone sold our maps.'",
+        "[Hakon] 'Then someone hangs.'"
+      ],
+      "nodes": [
+        {
+          "node_id": "Q8_C1",
+          "prompt": "Choose investigation method.",
+          "choices": [
+            {
+              "choice_id": "Q8_C1_A",
+              "text": "Torture/interrogation",
+              "effects": [
+                {"target": "P", "op": "add", "value": 4},
+                {"target": "O", "op": "add", "value": -10},
+                {"target": "M", "op": "add", "value": -2}
+              ],
+              "set_flags": {"investigation_method": "torture"}
+            },
+            {
+              "choice_id": "Q8_C1_B",
+              "text": "Public inquest",
+              "effects": [
+                {"target": "O", "op": "add", "value": 8},
+                {"target": "V", "op": "add", "value": 4},
+                {"target": "M", "op": "add", "value": 2}
+              ],
+              "set_flags": {"investigation_method": "inquest"}
+            },
+            {
+              "choice_id": "Q8_C1_C",
+              "text": "Shadow surveillance",
+              "effects": [
+                {"target": "P", "op": "add", "value": 2},
+                {"target": "O", "op": "add", "value": 2},
+                {"target": "M", "op": "add", "value": 1}
+              ],
+              "set_flags": {"investigation_method": "shadow"},
+              "notes": "If ending_vector == 'exile', add +4 investigation accuracy in runtime resolver."
+            },
+            {
+              "choice_id": "Q8_C1_D",
+              "text": "Seer divination",
+              "effects": [
+                {"target": "S", "op": "add", "value": 10},
+                {"target": "O", "op": "add", "value": -5},
+                {"target": "V", "op": "add", "value": -3}
+              ],
+              "set_flags": {"investigation_method": "divination"}
+            }
+          ]
+        },
+        {
+          "node_id": "Q8_C2",
+          "prompt": "Name the traitor.",
+          "choices": [
+            {
+              "choice_id": "Q8_C2_A",
+              "text": "Accuse pirate splinter",
+              "set_flags": {"accusation": "pirate_splinter"}
+            },
+            {
+              "choice_id": "Q8_C2_B",
+              "text": "Accuse jarl envoy",
+              "set_flags": {"accusation": "jarl_envoy"}
+            },
+            {
+              "choice_id": "Q8_C2_C",
+              "text": "Accuse rogue acolyte",
+              "set_flags": {"accusation": "rogue_acolyte"}
+            },
+            {
+              "choice_id": "Q8_C2_D",
+              "text": "Accuse Leif's broker",
+              "set_flags": {"accusation": "leif_broker"}
+            }
+          ]
+        },
+        {
+          "node_id": "Q8_C3",
+          "prompt": "Set punishment.",
+          "choices": [
+            {
+              "choice_id": "Q8_C3_A",
+              "text": "Execute",
+              "effects": [
+                {"target": "P", "op": "add", "value": 6},
+                {"target": "O", "op": "add", "value": -8},
+                {"target": "V", "op": "add", "value": -4},
+                {"target": "M", "op": "add", "value": -2}
+              ],
+              "set_flags": {"sentence": "execute"}
+            },
+            {
+              "choice_id": "Q8_C3_B",
+              "text": "Exile",
+              "effects": [
+                {"target": "O", "op": "add", "value": 4},
+                {"target": "V", "op": "add", "value": 2},
+                {"target": "M", "op": "add", "value": 1}
+              ],
+              "set_flags": {"sentence": "exile"}
+            },
+            {
+              "choice_id": "Q8_C3_C",
+              "text": "Flip as double agent",
+              "effects": [
+                {"target": "S", "op": "add", "value": 3},
+                {"target": "O", "op": "add", "value": 2},
+                {"target": "P", "op": "add", "value": 2}
+              ],
+              "set_flags": {"sentence": "double_agent"}
+            }
+          ]
+        }
+      ],
+      "derived": [
+        {
+          "id": "culprit",
+          "expression": "culprit = (ending_vector=='conquest' ? 'jarl_envoy' : ending_vector=='accord' ? 'pirate_splinter' : ending_vector=='ashen' ? 'rogue_acolyte' : 'leif_broker')"
+        },
+        {
+          "id": "innocent_blood",
+          "expression": "innocent_blood = (accusation != culprit)"
+        }
+      ],
+      "scoring": {
+        "rules": [
+          {
+            "id": "accuracy",
+            "expression": "accuracy = (accusation == culprit ? 12 : -12) + ((ending_vector=='exile' && investigation_method=='shadow') ? 4 : 0)"
+          },
+          {
+            "id": "method_bonus",
+            "expression": "method_bonus = (investigation_method=='torture' ? -8 : investigation_method=='inquest' ? 6 : investigation_method=='shadow' ? 4 : 2)"
+          },
+          {
+            "id": "q8_score",
+            "expression": "q8_score = clamp(30 + 0.18*O + 0.16*M + 0.10*V + 0.10*P + 0.10*S + accuracy + method_bonus - (innocent_blood?10:0), 0, 100)"
+          }
+        ],
+        "final_score": "q8_score",
+        "bands": [
+          {
+            "min": 80,
+            "max": 100,
+            "label": "clean_success",
+            "effects": [{"target": "A2", "op": "add", "value": 8}],
+            "set_flags": {"Q8_result": "clean_success"}
+          },
+          {
+            "min": 65,
+            "max": 79,
+            "label": "costly_success",
+            "effects": [{"target": "A2", "op": "add", "value": 4}],
+            "set_flags": {"Q8_result": "costly_success"}
+          },
+          {
+            "min": 50,
+            "max": 64,
+            "label": "contested",
+            "effects": [{"target": "A2", "op": "add", "value": 0}],
+            "set_flags": {"Q8_result": "contested"}
+          },
+          {
+            "min": 0,
+            "max": 49,
+            "label": "failure",
+            "effects": [{"target": "A2", "op": "add", "value": -6}],
+            "set_flags": {"Q8_result": "failure"}
+          }
+        ]
+      }
+    },
+    {
+      "quest_id": "Q9_SIEGE_OF_NESODDEN",
+      "order": 9,
+      "title": "Siege of Nesodden",
+      "beat": [
+        "[Scout] 'Nesodden burns at dawn.'",
+        "[Astrid] 'If we take it wrong, the fjord starves.'"
+      ],
+      "nodes": [
+        {
+          "node_id": "Q9_C1",
+          "prompt": "Choose battle plan.",
+          "choices": [
+            {
+              "choice_id": "Q9_C1_A",
+              "text": "Night assault",
+              "effects": [
+                {"target": "P", "op": "add", "value": 10},
+                {"target": "V", "op": "add", "value": -8},
+                {"target": "O", "op": "add", "value": -4},
+                {"target": "W", "op": "add", "value": -1}
+              ],
+              "set_flags": {"battle_plan": "night_assault"}
+            },
+            {
+              "choice_id": "Q9_C1_B",
+              "text": "Hold choke points",
+              "effects": [
+                {"target": "W", "op": "add", "value": 6},
+                {"target": "O", "op": "add", "value": 4},
+                {"target": "V", "op": "add", "value": 2}
+              ],
+              "set_flags": {"battle_plan": "hold_chokes"}
+            },
+            {
+              "choice_id": "Q9_C1_C",
+              "text": "Three-fires cease line",
+              "effects": [
+                {"target": "S", "op": "add", "value": 8},
+                {"target": "O", "op": "add", "value": 6},
+                {"target": "V", "op": "add", "value": 5},
+                {"target": "P", "op": "add", "value": -4}
+              ],
+              "set_flags": {"battle_plan": "cease_line"}
+            },
+            {
+              "choice_id": "Q9_C1_D",
+              "text": "Shadow sabotage",
+              "effects": [
+                {"target": "P", "op": "add", "value": 4},
+                {"target": "S", "op": "add", "value": 4},
+                {"target": "O", "op": "add", "value": -3}
+              ],
+              "set_flags": {"battle_plan": "shadow_sabotage"}
+            }
+          ]
+        },
+        {
+          "node_id": "Q9_C2",
+          "prompt": "Call allies.",
+          "choices": [
+            {
+              "choice_id": "Q9_C2_A",
+              "text": "Pirate clans",
+              "effects": [
+                {"target": "P", "op": "add", "value": 8},
+                {"target": "M", "op": "add", "value": 2},
+                {"target": "V", "op": "add", "value": -4}
+              ],
+              "set_flags": {"ally_call": "pirate_clans"}
+            },
+            {
+              "choice_id": "Q9_C2_B",
+              "text": "Jarl levies",
+              "effects": [
+                {"target": "V", "op": "add", "value": 8},
+                {"target": "O", "op": "add", "value": 3},
+                {"target": "P", "op": "add", "value": -2}
+              ],
+              "set_flags": {"ally_call": "jarl_levies"}
+            },
+            {
+              "choice_id": "Q9_C2_C",
+              "text": "Settler militias",
+              "effects": [
+                {"target": "O", "op": "add", "value": 6},
+                {"target": "M", "op": "add", "value": 5},
+                {"target": "V", "op": "add", "value": 2}
+              ],
+              "set_flags": {"ally_call": "settler_militias"}
+            },
+            {
+              "choice_id": "Q9_C2_D",
+              "text": "Seer host",
+              "effects": [
+                {"target": "S", "op": "add", "value": 10},
+                {"target": "M", "op": "add", "value": -3},
+                {"target": "O", "op": "add", "value": -4}
+              ],
+              "set_flags": {"ally_call": "seer_host"}
+            }
+          ]
+        },
+        {
+          "node_id": "Q9_C3",
+          "prompt": "Gate crisis resolution.",
+          "choices": [
+            {
+              "choice_id": "Q9_C3_A",
+              "text": "Burn gate with captives",
+              "effects": [
+                {"target": "P", "op": "add", "value": 6},
+                {"target": "O", "op": "add", "value": -10},
+                {"target": "V", "op": "add", "value": -8}
+              ],
+              "set_flags": {"gate_crisis": "burn_gate"}
+            },
+            {
+              "choice_id": "Q9_C3_B",
+              "text": "Civilian corridor",
+              "effects": [
+                {"target": "O", "op": "add", "value": 10},
+                {"target": "V", "op": "add", "value": 6},
+                {"target": "M", "op": "add", "value": 4},
+                {"target": "W", "op": "add", "value": -2}
+              ],
+              "set_flags": {"gate_crisis": "civilian_corridor"}
+            },
+            {
+              "choice_id": "Q9_C3_C",
+              "text": "Champion duel",
+              "effects": [
+                {"target": "P", "op": "add", "value": 4},
+                {"target": "V", "op": "add", "value": 4},
+                {"target": "O", "op": "add", "value": 4}
+              ],
+              "set_flags": {"gate_crisis": "champion_duel"},
+              "notes": "If Wounds >= 2, apply M -3 after node resolution."
+            },
+            {
+              "choice_id": "Q9_C3_D",
+              "text": "Ash storm",
+              "effects": [
+                {"target": "S", "op": "add", "value": 12},
+                {"target": "O", "op": "add", "value": -8},
+                {"target": "M", "op": "add", "value": -2}
+              ],
+              "set_flags": {"gate_crisis": "ash_storm"}
+            }
+          ]
+        }
+      ],
+      "scoring": {
+        "rules": [
+          {
+            "id": "plan_fit",
+            "expression": "plan_fit = ((ending_vector=='conquest' && battle_plan=='night_assault') ? 10 : (ending_vector=='accord' && battle_plan=='hold_chokes') ? 9 : (ending_vector=='ashen' && battle_plan=='ash_storm') ? 10 : (ending_vector=='exile' && battle_plan=='shadow_sabotage') ? 8 : (ending_vector=='accord' && battle_plan=='cease_line') ? 7 : -4)"
+          },
+          {
+            "id": "q9_score",
+            "expression": "q9_score = clamp(28 + 0.20*W + 0.18*M + 0.16*P + 0.14*V + 0.10*O + 0.10*S + plan_fit - (mutiny?12:0) - (oath_cracked?8:0), 0, 100)"
+          }
+        ],
+        "final_score": "q9_score",
+        "bands": [
+          {
+            "min": 80,
+            "max": 100,
+            "label": "clean_success",
+            "effects": [{"target": "A2", "op": "add", "value": 8}],
+            "set_flags": {"Q9_result": "clean_success"}
+          },
+          {
+            "min": 65,
+            "max": 79,
+            "label": "costly_success",
+            "effects": [{"target": "A2", "op": "add", "value": 4}],
+            "set_flags": {"Q9_result": "costly_success"}
+          },
+          {
+            "min": 50,
+            "max": 64,
+            "label": "contested",
+            "effects": [{"target": "A2", "op": "add", "value": 0}],
+            "set_flags": {"Q9_result": "contested"}
+          },
+          {
+            "min": 0,
+            "max": 49,
+            "label": "failure",
+            "effects": [{"target": "A2", "op": "add", "value": -6}],
+            "set_flags": {"Q9_result": "failure"}
+          }
+        ]
+      }
+    },
+    {
+      "quest_id": "Q10_THAW_RECKONING",
+      "order": 10,
+      "title": "Thaw Reckoning",
+      "beat": [
+        "[Jarl Hakon] 'Ice breaks. So does every promise.'",
+        "[Sigrid] 'Then make one that can survive spring.'"
+      ],
+      "nodes": [
+        {
+          "node_id": "Q10_C1",
+          "prompt": "Choose political claim.",
+          "choices": [
+            {
+              "choice_id": "Q10_C1_A",
+              "text": "Pirate Crown",
+              "effects": [
+                {"target": "P", "op": "add", "value": 12},
+                {"target": "V", "op": "add", "value": -8},
+                {"target": "O", "op": "add", "value": -2}
+              ],
+              "set_flags": {"claim": "pirate_crown"}
+            },
+            {
+              "choice_id": "Q10_C1_B",
+              "text": "High Jarl Compact",
+              "effects": [
+                {"target": "V", "op": "add", "value": 12},
+                {"target": "O", "op": "add", "value": 8},
+                {"target": "P", "op": "add", "value": -4}
+              ],
+              "set_flags": {"claim": "high_jarl_compact"}
+            },
+            {
+              "choice_id": "Q10_C1_C",
+              "text": "Fjord Charter Confederacy",
+              "effects": [
+                {"target": "P", "op": "add", "value": 5},
+                {"target": "V", "op": "add", "value": 5},
+                {"target": "O", "op": "add", "value": 10},
+                {"target": "M", "op": "add", "value": 4}
+              ],
+              "set_flags": {"claim": "fjord_charter_confederacy"}
+            },
+            {
+              "choice_id": "Q10_C1_D",
+              "text": "Ash Regency",
+              "effects": [
+                {"target": "S", "op": "add", "value": 14},
+                {"target": "O", "op": "add", "value": -8},
+                {"target": "V", "op": "add", "value": -3}
+              ],
+              "set_flags": {"claim": "ash_regency"}
+            },
+            {
+              "choice_id": "Q10_C1_E",
+              "text": "Ghost Fleet Exit",
+              "effects": [
+                {"target": "P", "op": "add", "value": 4},
+                {"target": "O", "op": "add", "value": -4},
+                {"target": "M", "op": "add", "value": 2}
+              ],
+              "set_flags": {"claim": "ghost_fleet_exit"}
+            }
+          ]
+        },
+        {
+          "node_id": "Q10_C2",
+          "prompt": "Choose ring fate.",
+          "choices": [
+            {
+              "choice_id": "Q10_C2_A",
+              "text": "Wear it publicly",
+              "effects": [
+                {"target": "P", "op": "add", "value": 6},
+                {"target": "V", "op": "add", "value": 4},
+                {"target": "O", "op": "add", "value": -2}
+              ],
+              "set_flags": {"ring_fate": "wear_publicly"}
+            },
+            {
+              "choice_id": "Q10_C2_B",
+              "text": "Break and divide metal",
+              "effects": [
+                {"target": "O", "op": "add", "value": 8},
+                {"target": "P", "op": "add", "value": 2},
+                {"target": "V", "op": "add", "value": 2}
+              ],
+              "set_flags": {"ring_fate": "break_divide"}
+            },
+            {
+              "choice_id": "Q10_C2_C",
+              "text": "Cast into fjord",
+              "effects": [
+                {"target": "S", "op": "add", "value": 6},
+                {"target": "O", "op": "add", "value": 4},
+                {"target": "P", "op": "add", "value": -2},
+                {"target": "V", "op": "add", "value": -2}
+              ],
+              "set_flags": {"ring_fate": "cast_fjord"}
+            },
+            {
+              "choice_id": "Q10_C2_D",
+              "text": "Give to Yrsa",
+              "effects": [
+                {"target": "S", "op": "add", "value": 12},
+                {"target": "O", "op": "add", "value": -6}
+              ],
+              "set_flags": {"ring_fate": "give_yrsa"}
+            },
+            {
+              "choice_id": "Q10_C2_E",
+              "text": "Lock in neutral shrine",
+              "effects": [
+                {"target": "O", "op": "add", "value": 10},
+                {"target": "V", "op": "add", "value": 4}
+              ],
+              "set_flags": {"ring_fate": "neutral_shrine"}
+            }
+          ]
+        },
+        {
+          "node_id": "Q10_C3",
+          "prompt": "Choose final oath form.",
+          "choices": [
+            {
+              "choice_id": "Q10_C3_A",
+              "text": "Blood oath",
+              "effects": [
+                {"target": "O", "op": "add", "value": 8},
+                {"target": "M", "op": "add", "value": 2}
+              ],
+              "set_flags": {"oath_form": "blood_oath"}
+            },
+            {
+              "choice_id": "Q10_C3_B",
+              "text": "Law-stone oath",
+              "effects": [
+                {"target": "O", "op": "add", "value": 10},
+                {"target": "V", "op": "add", "value": 4}
+              ],
+              "set_flags": {"oath_form": "law_stone"}
+            },
+            {
+              "choice_id": "Q10_C3_C",
+              "text": "Witness charter oath",
+              "effects": [
+                {"target": "O", "op": "add", "value": 9},
+                {"target": "P", "op": "add", "value": 2},
+                {"target": "V", "op": "add", "value": 2},
+                {"target": "M", "op": "add", "value": 3}
+              ],
+              "set_flags": {"oath_form": "witness_charter"}
+            },
+            {
+              "choice_id": "Q10_C3_D",
+              "text": "Reject all oaths",
+              "effects": [
+                {"target": "O", "op": "add", "value": -15},
+                {"target": "P", "op": "add", "value": 3}
+              ],
+              "set_flags": {"oath_form": "reject_all"}
+            }
+          ]
+        }
+      ],
+      "scoring": {
+        "rules": [
+          {
+            "id": "vector_align",
+            "expression": "vector_align = ((ending_vector=='conquest' && claim=='pirate_crown') ? 12 : (ending_vector=='accord' && (claim=='high_jarl_compact' || claim=='fjord_charter_confederacy')) ? 12 : (ending_vector=='ashen' && claim=='ash_regency') ? 12 : (ending_vector=='exile' && claim=='ghost_fleet_exit') ? 12 : -5)"
+          },
+          {
+            "id": "ring_align",
+            "expression": "ring_align = ((ending_vector=='conquest' && ring_fate=='wear_publicly') ? 4 : (ending_vector=='accord' && (ring_fate=='break_divide' || ring_fate=='neutral_shrine')) ? 6 : (ending_vector=='ashen' && (ring_fate=='cast_fjord' || ring_fate=='give_yrsa')) ? 6 : (ending_vector=='exile' && ring_fate=='cast_fjord') ? 4 : 0)"
+          },
+          {
+            "id": "oath_term",
+            "expression": "oath_term = (oath_form=='blood_oath' ? 4 : oath_form=='law_stone' ? 6 : oath_form=='witness_charter' ? 7 : -12)"
+          },
+          {
+            "id": "q10_score",
+            "expression": "q10_score = clamp(34 + 0.18*P + 0.18*V + 0.18*O + 0.16*W + 0.14*M + 0.10*S + vector_align + ring_align + oath_term - (oath_shattered?12:0) - (famine?8:0), 0, 100)"
+          }
+        ],
+        "final_score": "q10_score",
+        "bands": [
+          {
+            "min": 80,
+            "max": 100,
+            "label": "clean_success",
+            "effects": [{"target": "A2", "op": "add", "value": 8}],
+            "set_flags": {"Q10_result": "clean_success"}
+          },
+          {
+            "min": 65,
+            "max": 79,
+            "label": "costly_success",
+            "effects": [{"target": "A2", "op": "add", "value": 4}],
+            "set_flags": {"Q10_result": "costly_success"}
+          },
+          {
+            "min": 50,
+            "max": 64,
+            "label": "contested",
+            "effects": [{"target": "A2", "op": "add", "value": 0}],
+            "set_flags": {"Q10_result": "contested"}
+          },
+          {
+            "min": 0,
+            "max": 49,
+            "label": "failure",
+            "effects": [{"target": "A2", "op": "add", "value": -6}],
+            "set_flags": {"Q10_result": "failure"}
+          }
+        ]
+      },
+      "post_rules": [
+        {
+          "id": "act3_start_warlord",
+          "expression": "if (q10_score>=75 && ending_vector=='conquest') then act3_start_state='WARLORD_ASCENDANT'"
+        },
+        {
+          "id": "act3_start_treaty",
+          "expression": "if (q10_score>=75 && ending_vector=='accord') then act3_start_state='TREATY_REGENT'"
+        },
+        {
+          "id": "act3_start_ashen",
+          "expression": "if (q10_score>=75 && ending_vector=='ashen') then act3_start_state='ASH_PROPHET'"
+        },
+        {
+          "id": "act3_start_ghost",
+          "expression": "if (q10_score>=65 && ending_vector=='exile') then act3_start_state='GHOST_ADMIRAL'"
+        },
+        {
+          "id": "act3_start_fallback",
+          "expression": "if (act3_start_state is null) then act3_start_state='FRACTURED_FJORD'"
+        },
+        {
+          "id": "ending_threshold_mod",
+          "expression": "if (A2>=30) aligned_ending_threshold_delta=-5; if (A2<=-10) frozen_graves_risk_floor=50"
+        }
+      ]
+    }
+  ]
+}

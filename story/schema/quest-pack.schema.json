@@ -1,0 +1,298 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://pirates-scandinavia.local/schema/quest-pack.schema.json",
+  "title": "Quest Pack Schema",
+  "type": "object",
+  "required": [
+    "version",
+    "formula_language",
+    "act",
+    "stats",
+    "flags",
+    "quests"
+  ],
+  "properties": {
+    "version": {
+      "type": "string",
+      "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+    },
+    "formula_language": {
+      "type": "string"
+    },
+    "act": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "stats": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "type": "string",
+        "pattern": "^[A-Za-z_][A-Za-z0-9_]*$"
+      }
+    },
+    "flags": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {
+        "type": "string"
+      }
+    },
+    "meta": {
+      "type": "object",
+      "additionalProperties": {
+        "type": ["string", "number", "boolean", "null"]
+      }
+    },
+    "quests": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/quest"
+      }
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "quest": {
+      "type": "object",
+      "required": [
+        "quest_id",
+        "order",
+        "title",
+        "beat",
+        "nodes",
+        "scoring"
+      ],
+      "properties": {
+        "quest_id": {
+          "type": "string",
+          "pattern": "^Q[0-9]+_[A-Z0-9_]+$"
+        },
+        "order": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "beat": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string"
+          }
+        },
+        "nodes": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/node"
+          }
+        },
+        "derived": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/expressionRule"
+          }
+        },
+        "scoring": {
+          "$ref": "#/$defs/scoring"
+        },
+        "post_rules": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/expressionRule"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "node": {
+      "type": "object",
+      "required": [
+        "node_id",
+        "prompt",
+        "choices"
+      ],
+      "properties": {
+        "node_id": {
+          "type": "string",
+          "pattern": "^Q[0-9]+_C[0-9]+$"
+        },
+        "prompt": {
+          "type": "string",
+          "minLength": 1
+        },
+        "choices": {
+          "type": "array",
+          "minItems": 2,
+          "items": {
+            "$ref": "#/$defs/choice"
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "choice": {
+      "type": "object",
+      "required": [
+        "choice_id",
+        "text"
+      ],
+      "properties": {
+        "choice_id": {
+          "type": "string",
+          "pattern": "^Q[0-9]+_C[0-9]+_[A-Z]$"
+        },
+        "text": {
+          "type": "string",
+          "minLength": 1
+        },
+        "condition": {
+          "type": "string"
+        },
+        "effects": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/effect"
+          }
+        },
+        "costs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/cost"
+          }
+        },
+        "set_flags": {
+          "type": "object",
+          "additionalProperties": {
+            "type": ["string", "number", "boolean", "null"]
+          }
+        },
+        "notes": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "effect": {
+      "type": "object",
+      "required": [
+        "target",
+        "op",
+        "value"
+      ],
+      "properties": {
+        "target": {
+          "type": "string"
+        },
+        "op": {
+          "type": "string",
+          "enum": ["add", "sub", "set"]
+        },
+        "value": {
+          "type": ["number", "string", "boolean"]
+        }
+      },
+      "additionalProperties": false
+    },
+    "cost": {
+      "type": "object",
+      "required": [
+        "target",
+        "amount"
+      ],
+      "properties": {
+        "target": {
+          "type": "string"
+        },
+        "amount": {
+          "type": "number",
+          "minimum": 0
+        }
+      },
+      "additionalProperties": false
+    },
+    "expressionRule": {
+      "type": "object",
+      "required": [
+        "id",
+        "expression"
+      ],
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "expression": {
+          "type": "string"
+        },
+        "notes": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    },
+    "band": {
+      "type": "object",
+      "required": [
+        "min",
+        "max",
+        "label"
+      ],
+      "properties": {
+        "min": {
+          "type": "number"
+        },
+        "max": {
+          "type": "number"
+        },
+        "label": {
+          "type": "string"
+        },
+        "effects": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/effect"
+          }
+        },
+        "set_flags": {
+          "type": "object",
+          "additionalProperties": {
+            "type": ["string", "number", "boolean", "null"]
+          }
+        }
+      },
+      "additionalProperties": false
+    },
+    "scoring": {
+      "type": "object",
+      "required": [
+        "rules",
+        "final_score",
+        "bands"
+      ],
+      "properties": {
+        "rules": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/expressionRule"
+          }
+        },
+        "final_score": {
+          "type": "string"
+        },
+        "bands": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "$ref": "#/$defs/band"
+          }
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}
